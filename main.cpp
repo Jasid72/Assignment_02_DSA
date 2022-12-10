@@ -1,0 +1,177 @@
+#include <iostream>
+
+using namespace std;
+
+class ItemInfo {
+private:
+    string product_name;
+    double price;
+    string rfidTagNumber;
+    string Original_location;
+    string Current_location;
+
+public:
+    void set_Product_name(string product_name) {
+        this->product_name = product_name;
+    }
+    string get_Product_name() { return product_name; }
+    void set_price(double price) { this->price = price; }
+    double get_Price() { return price; }
+    void set_RfidTagNumber(string rfidTagNumber) {
+        if(rfidTagNumber.length() == 9)
+        {
+            if(rfidTagNumber >= "A" && rfidTagNumber <= "F" || rfidTagNumber >= "0" && rfidTagNumber <= "9")
+            {
+                this->rfidTagNumber = rfidTagNumber;
+            } else
+            {
+                cout<<" Put 9 characters"<<endl;
+            }
+        }
+    }
+    string get_RfidTagNumber() { return rfidTagNumber; }
+    void set_Original_location(string Original_location) {
+        if (Original_location.length() == 5) {
+            this->Original_location = "s" + Original_location;
+        } else {
+            cout << "Enter Valid Original location" << endl;
+        }
+    }
+    string get_Original_location() { return Original_location; }
+    void set_Current_location(string Current_location) {
+        if(Current_location.length() == 3)
+        {
+            this->Current_location = "c" + Current_location;
+        } else
+        {
+            cout <<"Enter Valid Current Location"<<endl;
+        }
+
+    }
+    string get_Current_location() { return Current_location; }
+    ItemInfo() {}
+    ItemInfo(string product_name,  double price, string rfidTagNumber,
+             string Original_location, string Current_location)
+    {
+        this->set_Product_name(product_name);
+        this->set_price(price);
+        this->set_RfidTagNumber(rfidTagNumber);
+        this->set_Original_location(Original_location);
+        this->set_Current_location(Current_location);
+    }
+};
+
+class ItemInfoNode {
+private:
+    ItemInfoNode *pre;
+    ItemInfoNode *next;
+    ItemInfo data = {};
+
+public:
+    void set_next(ItemInfoNode *next) { this->next = next; }
+    ItemInfoNode *get_next() { return next; }
+
+    void set_pre(ItemInfoNode *pre) { this->pre = pre; }
+    ItemInfoNode *get_pre() { return pre; }
+    ItemInfo get_Data()
+    {
+        return data;
+    }
+    ItemInfoNode(){
+        pre = NULL;
+        next = NULL;
+
+    }
+    ItemInfoNode(string product_name, double price,
+                 string rfidTagNumber, string Original_location,
+                 string Current_location)
+                 {
+                    data.set_Product_name(product_name);
+                    data.set_price(price);
+                    data.set_RfidTagNumber(rfidTagNumber);
+                    data.set_Original_location(Original_location);
+                    data.set_Current_location(Current_location);
+                 }
+};
+
+class ItemList {
+private:
+    ItemInfoNode *Head = NULL;
+    ItemInfoNode *Tail = NULL;
+    int length = 0;
+
+public:
+    ItemList() {}
+    void insertInfo(string product_name, double price, string rfidTagNumber,
+                    string Original_location, string Current_location);
+    void Display();
+    void moveItem(string UserrfidTagNumber,  string old_location ,string newlocation);
+};
+
+
+void ItemList::insertInfo(string product_name, double price,
+                          string rfidTagNumber, string Original_location,
+                          string Current_location) {
+    ItemInfoNode *N1 = new ItemInfoNode(product_name, price, rfidTagNumber, Original_location, Current_location);
+    if(Head == NULL)
+    {
+        Head = N1;
+    }
+    else
+    {
+        ItemInfoNode *temp = Head;
+        Head = N1;
+        Head->set_next(temp);
+        length++;
+    }
+}
+
+void ItemList::moveItem(string UserrfidTagNumber,  string old_location ,string newlocation)
+{
+ItemInfoNode *temp= Head;
+if(temp->get_Data().get_RfidTagNumber() == UserrfidTagNumber)
+{
+    if(temp->get_Data().get_Original_location() == old_location)
+    {
+        temp->get_Data().set_Current_location(newlocation);
+    }
+    else
+    {
+        cout<<"Not working"<<endl;
+    }
+
+}
+else
+{
+    cout<<"Your Rfid Number is Not Match."<<endl;
+}
+}
+
+
+void ItemList::Display() {
+    ItemInfoNode *temp = Head;
+    if (temp == NULL) {
+        cout << "Empty List" << endl;
+    } else {
+        while (temp != NULL) {
+            cout<< "Item Name :" << temp->get_Data().get_Product_name()<<endl;
+            cout<< "Price :" << temp->get_Data().get_Price()<<endl;
+            cout<< "Rfid Number :" << temp->get_Data().get_RfidTagNumber()<<endl;
+            cout<< "Orignal Location :" << temp->get_Data().get_Original_location()<<endl;
+            cout<< "Current Location :" << temp->get_Data().get_Current_location()<<endl;
+            cout<<"_______"<<endl;
+            temp = temp->get_next();
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    ItemList t = {};
+    t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
+    t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
+    t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
+    t.insertInfo("Berry", 100, "00A5532FF", "99945", "999");
+    t.moveItem("A1111DDFF", "99345", "105");
+    t.Display();
+}
