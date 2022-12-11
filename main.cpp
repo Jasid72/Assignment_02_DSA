@@ -16,9 +16,9 @@ public:
     {
         this->product_name = product_name;
     }
-    string get_Product_name() { return product_name; }
+    string get_Product_name() { return this->product_name; }
     void set_price(double price) { this->price = price; }
-    double get_Price() { return price; }
+    double get_Price() { return this->price; }
     void set_RfidTagNumber(string rfidTagNumber)
     {
         if (rfidTagNumber.length() == 9)
@@ -33,34 +33,42 @@ public:
             }
         }
     }
-    string get_RfidTagNumber() { return rfidTagNumber; }
+    string get_RfidTagNumber() { return this->rfidTagNumber; }
     void set_Original_location(string Original_location)
     {
         if (Original_location.length() == 5)
         {
             this->Original_location = "s" + Original_location;
         }
+        else if (Original_location.length() == 6 && Original_location[0] == 's')
+        {
+            this->Original_location = Original_location;
+        }
         else
         {
             cout << "Enter Valid Original location" << endl;
         }
     }
-    string get_Original_location() { return Original_location; }
-    void set_Current_location(string Current_location)
+    string get_Original_location() { return this->Original_location; }
+    void set_Current_location(string Cur_loc)
     {
-        if (Current_location.length() == 3)
+        if (Cur_loc.length() == 3)
         {
-            this->Current_location = "c" + Current_location;
+            this->Current_location = "c" + Cur_loc;
+        }
+        else if (Cur_loc.length() == 4 && Cur_loc[0] == 'c')
+        {
+            this->Current_location = Cur_loc;
         }
         else
         {
             cout << "Enter Valid Current Location" << endl;
         }
     }
-    string get_Current_location() { return Current_location; }
+    string get_Current_location() { return this->Current_location; }
     ItemInfo() {}
     ItemInfo(string product_name, double price, string rfidTagNumber,
-             string Original_location, string Current_location)
+        string Original_location, string Current_location)
     {
         this->set_Product_name(product_name);
         this->set_price(price);
@@ -73,19 +81,27 @@ public:
 class ItemInfoNode
 {
 private:
-    ItemInfoNode *pre;
-    ItemInfoNode *next;
+    ItemInfoNode* pre;
+    ItemInfoNode* next;
     ItemInfo data = {};
 
 public:
-    void set_next(ItemInfoNode *next) { this->next = next; }
-    ItemInfoNode *get_next() { return next; }
+    void set_next(ItemInfoNode* next) { this->next = next; }
+    ItemInfoNode* get_next() { return next; }
 
-    void set_pre(ItemInfoNode *pre) { this->pre = pre; }
-    ItemInfoNode *get_pre() { return pre; }
+    void set_pre(ItemInfoNode* pre) { this->pre = pre; }
+    ItemInfoNode* get_pre() { return pre; }
+    void set_Data(ItemInfo i) {
+    this->data.set_Product_name(i.get_Product_name());
+    this->data.set_RfidTagNumber(i.get_RfidTagNumber());
+    this->data.set_price(i.get_Price());
+    this->data.set_Original_location(i.get_Original_location());
+    this->data.set_Current_location(i.get_Current_location());
+    }
+
     ItemInfo get_Data()
     {
-        return data;
+        return this->data;
     }
     ItemInfoNode()
     {
@@ -93,8 +109,8 @@ public:
         next = NULL;
     }
     ItemInfoNode(string product_name, double price,
-                 string rfidTagNumber, string Original_location,
-                 string Current_location)
+        string rfidTagNumber, string Original_location,
+        string Current_location)
     {
         next = NULL;
         pre = NULL;
@@ -109,30 +125,30 @@ public:
 class ItemList
 {
 private:
-    ItemInfoNode *Head = NULL;
-    ItemInfoNode *Tail = NULL;
+    ItemInfoNode* Head = NULL;
+    ItemInfoNode* Tail = NULL;
     int length = 0;
 
 public:
     ItemList() {}
     void insertInfo(string product_name, double price, string rfidTagNumber,
-                    string Original_location, string Current_location);
+        string Original_location, string Current_location);
     void Display();
     void moveItem(string UserrfidTagNumber, string old_location, string newlocation);
 };
 
 void ItemList::insertInfo(string product_name, double price,
-                          string rfidTagNumber, string Original_location,
-                          string Current_location)
+    string rfidTagNumber, string Original_location,
+    string Current_location)
 {
-    ItemInfoNode *N1 = new ItemInfoNode(product_name, price, rfidTagNumber, Original_location, Current_location);
+    ItemInfoNode* N1 = new ItemInfoNode(product_name, price, rfidTagNumber, Original_location, Current_location);
     if (Head == NULL)
     {
         Head = N1;
     }
     else
     {
-        ItemInfoNode *temp = Head;
+        ItemInfoNode* temp = Head;
         while (temp->get_next() != NULL)
         {
             temp = temp->get_next();
@@ -145,7 +161,7 @@ void ItemList::insertInfo(string product_name, double price,
 
 void ItemList::moveItem(string UserrfidTagNumber, string old_location, string newlocation)
 {
-    ItemInfoNode *temp = Head;
+    ItemInfoNode* temp = this->Head;
     while (temp != NULL)
     {
 
@@ -153,7 +169,11 @@ void ItemList::moveItem(string UserrfidTagNumber, string old_location, string ne
         {
             if (temp->get_Data().get_Original_location() == old_location)
             {
-                temp->get_Data().set_Current_location(newlocation);
+                ItemInfo obj = temp->get_Data();
+                obj.set_Current_location(newlocation);
+                temp->set_Data(obj);
+                //temp->get_Data().set_Current_location(newlocation);
+                break;
             }
             else
             {
@@ -170,7 +190,7 @@ void ItemList::moveItem(string UserrfidTagNumber, string old_location, string ne
 
 void ItemList::Display()
 {
-    ItemInfoNode *temp = Head;
+    ItemInfoNode* temp = Head;
     if (temp == NULL)
     {
         cout << "Empty List" << endl;
@@ -193,7 +213,7 @@ void ItemList::Display()
 
 int main()
 {
-    ItemList t = {};
+    ItemList t;
     t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
     t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
     t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
