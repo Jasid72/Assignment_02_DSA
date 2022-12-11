@@ -160,6 +160,7 @@ void ItemList::removeAllPurchased()
                 temp->get_pre()->set_next(temp->get_next());
             }
         }
+        temp = temp->get_next();
     }
 }
 
@@ -283,12 +284,12 @@ int main()
     ItemList t;
     t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
     t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
+    t.removeAllPurchased();
     t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
 //    t.insertInfo("Berry", 100, "00A5532FF", "99945", "999");
     // t.moveItem("00A5532FF", "s99945", "105");
     //t.printByLocation("c123");
    // t.checkout("c100");
     //t.checkout("c123");
-    t.removeAllPurchased();
     t.Display();
 }
