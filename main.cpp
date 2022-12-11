@@ -143,8 +143,48 @@ public:
 class DepartmentStore
 {
 public:
+    ItemList List;
     void Menu();
 };
+
+void DepartmentStore::Menu()
+{
+    while (true) {
+        cout << "Welcome!" << endl;
+        cout << "C - Clean store" << endl;
+        cout << "I - Insert an item into the list" << endl;
+        cout << "L - List by location" << endl;
+        cout << "M - Move an item in the store" << endl;
+        cout << "O - Checkout" << endl;
+        cout << "P - Print all items in store" << endl;
+        cout << "R - Print by RFID tag number" << endl;
+        cout << "U - Update inventory system" << endl;
+        cout << "Q - Exit the program." << endl;
+        cout << "____________________" << endl;
+        cout << "Select an Option to Perform :" << endl;
+        string choice;
+        cin >> choice;
+        if (choice == "I" || choice == "i") {
+            cout << "Enter the Product name: " << endl;
+            string product_name;
+            cin >> product_name;
+            cout << "Enter the RFID :" << endl;
+            string rfid;
+            cin >> rfid;
+            cout << "Enter the Orignal Location :" << endl;
+            string location;
+            cin >> location;
+            cout << "Enter the Price :" << endl;
+            double Price;
+            cin >> Price;
+            List.insertInfo(product_name, Price, rfid, location, "100");
+        } else if(choice == "L" || choice == "l")
+        {
+
+        }
+    }
+
+}
 
 void ItemList::removeAllPurchased(string cartnumber)
 {
@@ -286,18 +326,20 @@ void ItemList::Display()
 
 int main()
 {
-    ItemList t;
-    t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
-    t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
-    t.removeAllPurchased("123");
-//    t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
-//    t.insertInfo("Berry", 100, "00A5532FF", "99945", "999");
-   // t.moveItem("00A5532FF", "s99945", "105");
-   // t.printByLocation("c123");
-   // t.removeAllPurchased();
-
-    t.checkout("c123");
-
-    //t.checkout("c123");
-    t.Display();
+//    ItemList t;
+//    t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
+//    t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
+//    t.removeAllPurchased("123");
+////    t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
+////    t.insertInfo("Berry", 100, "00A5532FF", "99945", "999");
+//   // t.moveItem("00A5532FF", "s99945", "105");
+//   // t.printByLocation("c123");
+//    t.removeAllPurchased("c123");
+//
+//    t.checkout("c123");
+//
+//    //t.checkout("c123");
+//    t.Display();
+DepartmentStore d;
+d.Menu();
 }
