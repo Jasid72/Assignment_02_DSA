@@ -137,7 +137,31 @@ public:
     void moveItem(string UserrfidTagNumber, string old_location, string newlocation);
     void printByLocation(string location);
     double checkout(string cartNumber);
+    void removeAllPurchased();
 };
+
+void ItemList::removeAllPurchased()
+{
+    ItemInfoNode *temp = this->Head;
+    while(temp != NULL)
+    {
+        if(temp->get_Data().get_Current_location() == "out")
+        {
+            if(temp == Head)
+            {
+                Head = temp->get_next();
+            } else if(temp == Tail)
+            {
+                Tail = Tail->get_pre();
+                Tail->set_next(NULL);
+            } else
+            {
+                temp->get_next()->set_pre(temp->get_pre());
+                temp->get_pre()->set_next(temp->get_next());
+            }
+        }
+    }
+}
 
 double ItemList::checkout(string cartNumber)
 {
@@ -258,12 +282,13 @@ int main()
 {
     ItemList t;
     t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
-    //t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
-   // t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
+    t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
+    t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
 //    t.insertInfo("Berry", 100, "00A5532FF", "99945", "999");
-    //t.moveItem("00A5532FF", "s99945", "105");
+    // t.moveItem("00A5532FF", "s99945", "105");
     //t.printByLocation("c123");
    // t.checkout("c100");
     //t.checkout("c123");
-    //t.Display();
+    t.removeAllPurchased();
+    t.Display();
 }
