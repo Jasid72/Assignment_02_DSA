@@ -136,7 +136,30 @@ public:
     void Display();
     void moveItem(string UserrfidTagNumber, string old_location, string newlocation);
     void printByLocation(string location);
+    double checkout(string cartNumber);
 };
+
+double ItemList::checkout(string cartNumber)
+{
+    ItemInfoNode *temp = this->Head;
+    double total_Amount =0;
+    while (temp != NULL)
+    {
+        if(temp->get_Data().get_Current_location() == cartNumber)
+        {
+            temp->get_Data().set_Current_location("out");
+            cout << "Item Name :" << temp->get_Data().get_Product_name() << endl;
+            cout << "Price :" << temp->get_Data().get_Price() << endl;
+            cout << "Rfid Number :" << temp->get_Data().get_RfidTagNumber() << endl;
+            cout << "Orignal Location :" << temp->get_Data().get_Original_location() << endl;
+            cout << "Current Location :" << temp->get_Data().get_Current_location() << endl;
+            total_Amount += temp->get_Data().get_Price();
+            cout<<"The total cost of your item is :"<< total_Amount<<endl;
+            cout << "_______" << endl;
+        }
+        temp = temp->get_next();
+    }
+}
 
 void ItemList::printByLocation(string location)
 {
@@ -233,11 +256,13 @@ void ItemList::Display()
 int main()
 {
     ItemList t;
-//    t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
-    t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
-//    t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
+    t.insertInfo("Jerry", 56, "A7C8B4E1F", "12345", "123");
+    //t.insertInfo("Layz", 6, "0F999FCBA", "12345", "113");
+    t.insertInfo("Choco", 99, "A1111DDFF", "99345", "100");
 //    t.insertInfo("Berry", 100, "00A5532FF", "99945", "999");
    // t.moveItem("00A5532FF", "s99945", "105");
-   // t.printByLocation("c113");
-    t.Display();
+    //t.printByLocation("c113");
+    t.checkout("c100");
+    t.checkout("c123");
+    //t.Display();
 }
