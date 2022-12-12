@@ -157,7 +157,7 @@ void DepartmentStore::Menu()
         cout << "M - Move an item in the store" << endl;
         cout << "O - Checkout" << endl;
         cout << "P - Print all items in store" << endl;
-        cout << "R - Print by RFID tag number" << endl;
+        cout << "R - Remove all purchase" << endl;
         cout << "U - Update inventory system" << endl;
         cout << "Q - Exit the program." << endl;
         cout << "____________________" << endl;
@@ -180,7 +180,41 @@ void DepartmentStore::Menu()
             List.insertInfo(product_name, Price, rfid, location, "100");
         } else if(choice == "L" || choice == "l")
         {
-
+            cout<<"Enter the Location:"<<endl;
+            string location;
+            cin >>location;
+            List.printByLocation(location);
+        } else if (choice == "M" || choice == "m")
+        {
+            cout << "Enter the RFID :" << endl;
+            string rfid;
+            cin >> rfid;
+            cout << "Enter the Orignal Location :" << endl;
+            string location;
+            cin >> location;
+            cout<< "Enter the new Location:"<<endl;
+            string new_location;
+            cin >> new_location;
+            List.moveItem(rfid, location, new_location);
+        } else if(choice == "O" || choice == "o")
+        {
+            cout << "Enter the cart Number :"<<endl;
+            string cart;
+            cin >> cart;
+            List.checkout(cart);
+        } else if (choice == "P" || choice == "p")
+        {
+            List.Display();
+        } else if (choice == "R" || choice == "r")
+        {
+            cout << "Enter the cart Number :"<<endl;
+            string  cart ;
+            cin >> cart;
+            List.removeAllPurchased(cart);
+        } else if(choice == "Q" || choice == "q")
+        {
+            cout<<"Good Bye!!"<<endl;
+            break;
         }
     }
 
